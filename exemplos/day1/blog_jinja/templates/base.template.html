@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+    {% block style %}
+    <link rel="stylesheet" href="https://unpkg.com/marx-css/css/marx.min.css">
+    {% endblock %}
+</head>
+<body>
+    <h1>{% block headline %} {% endblock %}</h1>
+    <hr />
+    {% block content %} {% endblock %}
+    <hr />
+    <small>{% block footer %} Copyright 2022 {% endblock %}</small>
+</body>
+</html>
