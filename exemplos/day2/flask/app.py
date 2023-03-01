@@ -1,8 +1,13 @@
 from flask import Flask, url_for, request
+from flask_pymongo import PyMongo
 
 app = Flask(__name__)
 
 app.config["APP_NAME"] = "Meu Blog"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/blog"
+
+mongo = app.mongo = PyMongo(app)
+
 
 
 @app.errorhandler(404)
@@ -12,12 +17,15 @@ def not_found_page(error):
 
 @app.route("/")
 def index():
+
+    posts = mongo.db.posts.find()
+
     content_url = url_for("read_content", title="Novidade de 2022")
     return (
         f"<h1>{app.config['APP_NAME']}</h1>"
         f"<a href='{content_url}'>Novidades de 2022</a>"
         "<hr>"
-        f"{dir(request)}"
+        f"{list(posts)}"
     )
 
 # @app.route("/<title>")
