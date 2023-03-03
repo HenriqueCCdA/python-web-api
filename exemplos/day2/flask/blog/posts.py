@@ -26,7 +26,7 @@ def new_post(title: str, content: str, published: bool = True) -> str:
             "content": content,
             "published": published,
             "slug": slug,
-            "data": datetime.now(),
+            "date": datetime.now(),
         }
     )
 
