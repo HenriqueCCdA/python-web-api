@@ -1,0 +1,55 @@
+---
+- hosts: webservers
+  remote_user: ubuntu
+  vars:
+    system_user: ubuntu
+    base_path: /app
+    app_name: djblog
+    app_path: /app/django
+    settings_path: "{{ app_name }}/python-web-api"
+    database_path: "{{ base_path }}/db.sqlite3"
+    venv_path: /home/{{ system_user }}/.venv
+    django_admin: "{{ venv_path }}/bin/django-admin"
+  environment:
+    PYTHONPATH: "{{ app_path }}"
+    DJANGO_SETTINGS_MODULE: "{{ settings_path }}"
+    BLOG_ENV: production
+  tasks:
+
+    - name: Instalação de pacotes
+      become: true
+      apt:
+        update_cache: true
+        state: present
+        pkg:
+          - python3-dev
+          - python-is-python3
+          - nginx
+          - git
+          - sqlite3
+          - python3.10-venv
+
+    - name: Virtual Env python
+      pip:
+        virtualenv: "{{ venv_path }}"
+        virtualenv_command: python3.10 -m venv
+        name: pip
+        state: latest
+
+    - name: Adding user to www-data group
+      become: true
+      user:
+        name: "{{ system_user }}"
+        groups:
+          - www-data
+        append: true
+
+    - name: Base APP Folder
+      become: true
+      file:
+        path: "{{ base_path }}"
+        state: directory
+        owner: "{{ system_user }}"
+        group: www-data
+        mode: 0775
+        recurse: true
