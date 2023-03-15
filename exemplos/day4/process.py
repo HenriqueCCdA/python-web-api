@@ -20,13 +20,14 @@ def main():
     start = time.perf_counter()
     print("Inicio")
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor() as executor:
         future = executor.submit(consulta_dados)
         dados =  future.result()
         executor.submit(processa_dados, dados)
         executor.submit(grava_log)
         executor.submit(grava_log)
         executor.submit(grava_log)
+
 
     print("Fim")
     finish = time.perf_counter()

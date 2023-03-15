@@ -22,6 +22,8 @@ def main():
     dados = consulta_dados()
     processa_dados(dados)
     grava_log()
+    grava_log()
+    grava_log()
 
     print("Fim")
     finish = time.perf_counter()
